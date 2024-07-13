@@ -35,7 +35,7 @@ public class BeneficiaryService {
     public RestEntityResponse<Beneficiary> getBeneficiaryById(Integer id) {
 
         Optional<Beneficiary> beneficiaryById = repository.findById(id);
-        if (beneficiaryById.isEmpty()){
+        if (beneficiaryById.isEmpty()) {
             return RestEntityResponse.<Beneficiary>builder()
                     .success(false)
                     .messages(List.of("Beneficiary not found"))
@@ -46,22 +46,41 @@ public class BeneficiaryService {
     }
 
     public RestEntityResponse<List<Document>> getAllDocumentsByBeneficiaryId(Integer id) {
-        return RestEntityResponse.<List<Document>>builder().build();
+
+        Optional<Beneficiary> beneficiaryById = repository.findById(id);
+        if (beneficiaryById.isEmpty()) {
+            return RestEntityResponse.<List<Document>>builder()
+                    .success(false)
+                    .messages(List.of("Document not found"))
+                    .build();
+        }
+
+        if (beneficiaryById.get().getDocument().isEmpty()) {
+            return RestEntityResponse.<List<Document>>builder()
+                    .success(false)
+                    .messages(List.of("No documents founded"))
+                    .build();
+        }
+
+        return RestEntityResponse.<List<Document>>builder()
+                .entity(beneficiaryById.get().getDocument())
+                .success(true)
+                .build();
     }
 
     public RestEntityResponse<Beneficiary> createBeneficiary(Beneficiary beneficiary) {
 
         List<String> validate = validateBeneficiary(beneficiary);
 
-        if (!validate.isEmpty()){
-           return RestEntityResponse.<Beneficiary>builder()
-                   .success(false)
-                   .messages(validate)
-                   .build();
+        if (!validate.isEmpty()) {
+            return RestEntityResponse.<Beneficiary>builder()
+                    .success(false)
+                    .messages(validate)
+                    .build();
         }
         Optional<Beneficiary> beneficiaryById = repository.findById(beneficiary.getId());
 
-        if (beneficiaryById.isPresent()){
+        if (beneficiaryById.isPresent()) {
             return RestEntityResponse.<Beneficiary>builder()
                     .success(false)
                     .messages(List.of("User already exist"))
@@ -73,23 +92,60 @@ public class BeneficiaryService {
     }
 
     public RestEntityResponse<Beneficiary> updateBeneficiary(Beneficiary beneficiary) {
-        return RestEntityResponse.<Beneficiary>builder().build();
+
+        List<String> validate = validateBeneficiary(beneficiary);
+        if (!validate.isEmpty()) {
+            return RestEntityResponse.<Beneficiary>builder()
+                    .success(false)
+                    .messages(validate)
+                    .build();
+        }
+
+        Optional<Beneficiary> persistedBenficiary = repository.findById(beneficiary.getId());
+        if (persistedBenficiary.isEmpty()) {
+            return RestEntityResponse.<Beneficiary>builder()
+                    .success(false)
+                    .messages(List.of("Beneficiary not found"))
+                    .build();
+        }
+        persistedBenficiary.get().update(beneficiary);
+
+        Beneficiary beneficiaryUpdated = repository.save(persistedBenficiary.get());
+
+        return RestEntityResponse.<Beneficiary>builder()
+                .success(true)
+                .entity(beneficiaryUpdated)
+                .build();
     }
 
-    public void deleteBeneficiary(Integer id) {
+    public RestEntityResponse<Beneficiary> deleteBeneficiary(Integer id) {
+
+        if (id == null) {
+            return RestEntityResponse.<Beneficiary>builder()
+                    .success(false)
+                    .messages(List.of("Beneficiary doesn't exists, can't delete"))
+                    .build();
+        }
+
+        repository.deleteById(id);
+
+        return RestEntityResponse.<Beneficiary>builder()
+                .success(true)
+                .messages(List.of("Beneficiary Deleted"))
+                .build();
 
     }
 
-    private List<String> validateBeneficiary(Beneficiary beneficiary){
+    private List<String> validateBeneficiary(Beneficiary beneficiary) {
         List<String> messages = new ArrayList<>();
-        if (beneficiary.getName().isEmpty()){
+        if (beneficiary.getName().isEmpty()) {
             messages.add("Name is null");
             return messages;
         }
-        if (beneficiary.getPhone().isEmpty()){
+        if (beneficiary.getPhone().isEmpty()) {
             messages.add("Phone is null");
         }
-        if (beneficiary.getBornDate() == null){
+        if (beneficiary.getBornDate() == null) {
             messages.add("Born age is null");
         }
         return messages;

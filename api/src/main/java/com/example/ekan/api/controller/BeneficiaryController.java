@@ -1,6 +1,7 @@
 package com.example.ekan.api.controller;
 
 import com.example.ekan.api.model.Beneficiary;
+import com.example.ekan.api.model.Document;
 import com.example.ekan.api.reponse.RestEntityResponse;
 import com.example.ekan.api.service.BeneficiaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,59 @@ public class BeneficiaryController {
 
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<RestEntityResponse<Beneficiary>> getBeneficiaryById(@PathVariable Integer id) {
+
+        RestEntityResponse<Beneficiary> response = service.getBeneficiaryById(id);
+
+        if (!response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/document/{id}")
+    public ResponseEntity<RestEntityResponse<List<Document>>> getDocumentsByBeneficiaryId(@PathVariable Integer id) {
+
+        RestEntityResponse<List<Document>> response = service.getAllDocumentsByBeneficiaryId(id);
+
+        if (!response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<RestEntityResponse<Beneficiary>> createBeneficiary(@RequestBody Beneficiary beneficiary) {
 
         RestEntityResponse<Beneficiary> response = service.createBeneficiary(beneficiary);
 
-        if (!response.isSuccess()){
-            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        if (!response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(response,HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<RestEntityResponse<Beneficiary>> updateBeneficiary(@RequestBody Beneficiary beneficiary) {
+
+        RestEntityResponse<Beneficiary> response = service.updateBeneficiary(beneficiary);
+
+        if (!response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<RestEntityResponse<Beneficiary>> deleteBeneficiary(@PathVariable Integer id) {
+
+        RestEntityResponse<Beneficiary> response = service.deleteBeneficiary(id);
+
+        if (!response.isSuccess()) {
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
