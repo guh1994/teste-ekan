@@ -51,7 +51,7 @@ public class BeneficiaryService {
         if (beneficiaryById.isEmpty()) {
             return RestEntityResponse.<List<Document>>builder()
                     .success(false)
-                    .messages(List.of("Document not found"))
+                    .messages(List.of("Beneficiary not found"))
                     .build();
         }
 
@@ -78,12 +78,12 @@ public class BeneficiaryService {
                     .messages(validate)
                     .build();
         }
-        Optional<Beneficiary> beneficiaryById = repository.findById(beneficiary.getId());
 
+        Optional<Beneficiary> beneficiaryById = repository.findById(beneficiary.getId());
         if (beneficiaryById.isPresent()) {
             return RestEntityResponse.<Beneficiary>builder()
                     .success(false)
-                    .messages(List.of("User already exist"))
+                    .messages(List.of("Beneficiary already exist"))
                     .build();
         }
         Beneficiary beneficiaryCreated = repository.save(beneficiary);

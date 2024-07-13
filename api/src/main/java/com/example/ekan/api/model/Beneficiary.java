@@ -26,7 +26,7 @@ public class Beneficiary {
     private String phone;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private Date bornDate;
+    private LocalDate bornDate;
 
     private LocalDate inclusionDate;
 
