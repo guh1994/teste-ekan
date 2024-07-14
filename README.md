@@ -25,11 +25,11 @@
 
 ### Requisições
 1. Envie um GET para `http://localhost:8080/beneficiary` para encontrar todos os benenficiarios.
-2. Envie um GET para `http://localhost:8080/{id}` para encontrar o benificiario pelo id.
+2. Envie um GET para `http://localhost:8080/beneficiary/{id}` para encontrar o benificiario pelo id.
 3. Envie um GET para `http://localhost:8080/document/{id}` para encontrar todos documentos de um beneficiario.
 4. Envie um POST para `http://localhost:8080/beneficiary` para criar um beneficiario (Necessita de um body em json no formato listado no item 7).
 5. Envie um PUT para `http://localhost:8080/beneficiary` para atualizar um beneficiario (Necessita de um body em json no formato listado no item 9). 
-6. Envie um DELETE para `http://localhost:8080/{id}`para deleter um beneficiario.
+6. Envie um DELETE para `http://localhost:8080/beneficiary/{id}`para deleter um beneficiario.
 8. Formato Json para Criar Customer
 Envie o json no seguinte formato.
       ```json 
