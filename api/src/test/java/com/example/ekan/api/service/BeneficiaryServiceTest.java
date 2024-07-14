@@ -30,8 +30,8 @@ public class BeneficiaryServiceTest {
     public static final String NAME = "TESTE DA EKAN";
     public static final LocalDate BORN_DATE = LocalDate.of(1999, 01, 01);
     public static final String PHONE = "1122334455";
-    public static final String DOCUMENT_TYPE = "Currículo";
-    public static final String DESCRIPTION = "Currículo";
+    public static final String DOCUMENT_TYPE = "Curriculo";
+    public static final String DESCRIPTION = "Curriculo";
 
     @InjectMocks
     public BeneficiaryService subjet;
